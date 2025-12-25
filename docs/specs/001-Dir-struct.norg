@@ -1,0 +1,33 @@
+@document.meta
+title: 001-Dir-struct
+description: 
+authors: dfg
+categories: 
+created: 2025-12-25T20:43:33+0530
+updated: 2025-12-25T20:52:52+0530
+version: 1.1.1
+@end
+
+* 1. Summary
+  The directory structure is a very important convention and I have defined a Very rigid structure for it.
+  This structure is to be followed unless it is absolutely necessory to brake it.
+
+* Rules
+  The Project has to follow the following rules for modules and code fragmentation.
+  @code bash file tree
+  .
+  |_src
+  | |_cpu
+  | | |_mod.rs
+  | | |_more-cpu-logic
+  | |_bus
+  | | |_mod.rs
+  | | |_ram.rs
+  | | |_other-interfaces
+  | |_models
+  |   |_mod.rs
+  |   |_cpu.rs
+  |   |_other-models
+  |_Cargo.toml
+  |_main.rs
+  @end
