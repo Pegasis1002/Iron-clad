@@ -1,0 +1,54 @@
+@document.meta
+title: 002-bus
+description: 
+authors: dfg
+categories: 
+created: 2025-12-26T13:06:40+0530
+updated: 2025-12-26T13:13:26+0530
+version: 1.1.1
+@end
+
+* 1. Summary
+  - The bus struct contains all storage devices(voletile and non-voletile).
+  - Ram has a hard limit of 2^32 bits.
+  - This computer only needs 128 MB of Ram.
+
+
+* 2. Functional Requirements
+  - 128 MB of Ram
+
+* 3. Interface Definition
+*** 3.2 RAM
+    - Ram is defined as a Vector of 8-bit unsigned integers.
+
+    @code rust
+    struct BUS {
+      ram: Vec<u8>,
+      // Other interfaces.
+    }
+    @end
+
+* 4. Methods
+*** 4.1 Initialization
+    - Set a hard limit on ram when initializing the struct.
+    - RAM_SIZE = 128 * 1024 * 1024;
+
+    @code rust
+    let const RAM_SIZE = 128 * 1024 * 1024;
+    impl BUS {
+      pub fn new() -> self {
+        return self {
+          ram: vec![u8; RAM_SIZE],
+          // Other interfaces
+        }
+        // Other methods
+      }
+    }
+    @end
+
+*** 4.2 Read
+
+* 7. Notes & Open Questions
+- {Any miscellaneous notes, design trade-offs considered, 
+questions that need to be resolved.}
+
