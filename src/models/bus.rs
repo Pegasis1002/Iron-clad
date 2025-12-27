@@ -1,4 +1,4 @@
-pub struct BUS {
-    pub ram: Vec<u8>,
+pub(crate) struct BUS {
+    pub(crate) ram: Vec<u8>,
     // Other fields
 }

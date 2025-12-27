@@ -1,7 +1,7 @@
 use crate::models::bus::BUS;
 
-pub struct CPU {
-    pc: u32,
-    reg: [u32; 32],
-    bus: BUS,
+pub(crate) struct CPU {
+    pub(crate) pc: u32,
+    pub(crate) reg: [u32; 32],
+    pub(crate) bus: BUS,
 }

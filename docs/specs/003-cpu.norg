@@ -1,79 +1,54 @@
-@document
-    - title: Component Specification: {COMPONENT_NAME}
-    - author: {YOUR_NAME}
-    - date: {YYYY-MM-DD}
-    - version: 0.1
-    - status: Draft
+@document.meta
+title: 003-cpu
+description: 
+authors: dfg
+categories: 
+created: 2025-12-27T14:00:28+0530
+updated: 2025-12-27T14:00:28+0530
+version: 1.1.1
 @end
 
 * 1. Summary
-{A brief, one-paragraph summary of the component's purpose
-and its role within the larger RISC-V design.}
+  - The bus struct contains all storage devices(voletile and non-voletile).
+  - Ram has a hard limit of 2^32 bits.
+  - This computer only needs 128 MB of Ram.
+
 
 * 2. Functional Requirements
-- {Requirement 1: e.g., The component MUST implement the 
-behavior defined in XYZ section of the RISC-V 
-specification.}
-- {Requirement 2: e.g., The component MUST handle situatio
-Y.}
-- {Add more requirements as needed.}
+  - Requirements for CPU are:
+  - Program counter(PC)
+  - Array of 32 register of 32-bit capacity.
+  - [Bus]{:./002-bus:}
 
-* 3. Interface Definition
-** 3.1. Input Ports
-| Name | Width (bits) | Description |
-|------|--------------|-------------|
-| clk  | 1            | System clock signal. |
-| rst  | 1            | System reset signal (active 
-high/low). |
-|      |              |             |
+* 3. Struct Definition
+*** 3.2 CPU
+    - CPU struct:
+    @code rust
+    pub(crate) struct CPU {
+      pub(crate) pc: u32,
+      pub(crate) reg: [u32; 32],
+      pub(crate) bus: BUS,
+    }
+    @end
 
-** 3.2. Output Ports
-| Name | Width (bits) | Description |
-|------|--------------|-------------|
-|      |              |             |
-|      |              |             |
+* 4. Methods
+*** 4.1 Initialization
 
-** 3.3. Parameters
-{Parameters that allow for static configuration of the 
-component, e.g., buffer depth, data width.}
-| Name | Type    | Default | Description |
-|------|---------|---------|-------------|
-|      |         |         |             |
+    @code rust
+    impl CPU {
+      pub fn new(bus: BUS) -> Self {
+        return Self {
+          pc: 0x8000_0000,
+          reg: [0; 32],
+          bus,
+        }
+        // Other methods
+      }
+    }
+    @end
 
-* 4. Microarchitecture
-{A detailed description of the internal design. This secti
-can include diagrams (ASCII or linked), state machine 
-descriptions, pipeline stages, and explanations of the dat
-and control paths.}
-
-** 4.1. State Machine (if applicable)
-- *State 1 (e.g., IDLE)*: {Description of behavior in this
-state and transition conditions.}
-- *State 2 (e.g., PROCESSING)*: {Description of behavior i
-this state and transition conditions.}
-
-** 4.2. Pipeline Stages (if applicable)
-- *Stage 1 (e.g., FETCH)*: {Description of operations 
-performed in this stage.}
-- *Stage 2 (e.g., DECODE)*: {Description of operations 
-performed in this stage.}
-
-* 5. Performance & Resource Targets
-- *Clock Frequency*: {Target clock frequency in MHz.}
-- *Latency*: {Instruction/data latency in clock cycles for
-critical operations.}
-- *Throughput*: {Data throughput or instructions per cycle
-(IPC).}
-- *Area/Resource Estimate*: {Estimated resource usage (e.g
-LUTs, FFs, BRAMs).}
-
-* 6. Verification Plan
-{A high-level strategy for verifying this component. What 
-are the critical features to test? What kind of testbench 
-needed? What are the key coverage goals?}
-
-- *Test Case 1*: {Verify basic functionality X.}
-- *Test Case 2*: {Verify corner case Y.}
+    - We pass the bus directly to the new() function so that it takes ownership and can modify it as it sees fit.
+    - Note that the bus instance before passing to the function cannot be used after it is given to this function.
 
 * 7. Notes & Open Questions
 - {Any miscellaneous notes, design trade-offs considered, 

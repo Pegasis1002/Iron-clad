@@ -1,4 +1,5 @@
 use crate::models::bus::BUS;
+
 pub mod ram;
 
 const RAM_SIZE: usize = 128 * 1024 * 1024;
