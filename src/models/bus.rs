@@ -1,3 +1,4 @@
 pub struct BUS {
-    ram: Vec<u8>,
+    pub ram: Vec<u8>,
+    // Other fields
 }
