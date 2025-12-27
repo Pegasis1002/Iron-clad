@@ -1,3 +1,5 @@
+pub mod step;
+
 use crate::models::bus::BUS;
 use crate::models::cpu::CPU;
 

@@ -50,6 +50,21 @@ version: 1.1.1
     - We pass the bus directly to the new() function so that it takes ownership and can modify it as it sees fit.
     - Note that the bus instance before passing to the function cannot be used after it is given to this function.
 
+*** 4.2 Step
+
+    @code rust
+    impl CPU {
+      pub(crate) fn step(&self) {
+        // Fetch Instruction from memory
+        let op_code = BUS::read_word(self.pc);
+
+        // Decode and Exec the Instruction
+
+        // Increament Program counter
+        self.pc += 4;
+      }
+    }
+    @end
 * 7. Notes & Open Questions
 - {Any miscellaneous notes, design trade-offs considered, 
 questions that need to be resolved.}

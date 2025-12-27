@@ -11,4 +11,8 @@ fn main() {
     let mut iron_clad = CPU::new(hardware_bus);
 
     println!("CPU Initialized! PC start at {:#X}", iron_clad.pc);
+
+    loop {
+        CPU::step(&mut iron_clad);
+    }
 }

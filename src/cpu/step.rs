@@ -1,0 +1,13 @@
+use crate::models::cpu::CPU;
+
+impl CPU {
+    pub(crate) fn step(&mut self) {
+        //Fetch Instruction
+        let op_code = self.bus.read_word(self.pc);
+
+        println!("Instruction {} = {}", self.pc, op_code);
+
+        //Increament Program counter
+        self.pc += 4;
+    }
+}

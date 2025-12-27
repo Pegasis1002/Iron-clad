@@ -46,7 +46,25 @@ version: 1.1.1
     }
     @end
 
-*** 4.2 Read
+*** 4.2 Read Word
+    - Read 4 bytes from the memory
+    - Combine them into a singular u32 instruction.
+    - Keeping in mind Little-Endian convention(least significant byte first)
+
+    @code rust
+    pub fn read_word(&self, addr: u32) -> u32 {
+      let addr = addr as usize;
+
+      // Little-Endian
+      let b0 = self.ram[addr] as u32;
+      let b1 = self.ram[addr + 1] as u32;
+      let b2 = self.ram[addr + 2] as u32;
+      let b3 = self.ram[addr + 3] as u32;
+
+      // Combine and return result
+      return (b3 << 24) | (b2 << 16) | (b1 << 8) | b0;
+    }
+    @end
 
 * 7. Notes & Open Questions
 - {Any miscellaneous notes, design trade-offs considered, 
