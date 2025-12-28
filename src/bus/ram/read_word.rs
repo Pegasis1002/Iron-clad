@@ -2,7 +2,7 @@ use crate::models::bus::BUS;
 
 impl BUS {
     pub(crate) fn read_word( &self, addr: u32) -> u32 {
-        let addr = addr as usize;
+        let addr = (addr - 0x8000_0000) as usize;
 
         let b0 = self.ram[addr] as u32;
         let b1 = self.ram[addr + 1] as u32;
