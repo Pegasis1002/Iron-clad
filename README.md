@@ -21,7 +21,7 @@
 Clone the repository:
 
 ```bash
-git clone <repository_url>
+git clone https://github.com/Pegasis1002/Iron-clad.git
 cd iron-clad
 ```
 
@@ -59,10 +59,4 @@ To build the project:
 
 ```bash
 cargo build
-```
-
-To run tests (if available):
-
-```bash
-cargo test
 ```
