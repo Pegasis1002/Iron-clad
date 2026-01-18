@@ -16,6 +16,8 @@ impl CPU {
         println!("Instruction at {:#X} = {:#010X}", self.pc, inst);
         println!("Decoded Instruction: {:?}", decoded_instruction);
 
+        self.execute(decoded_instruction);
+        
         //Increament Program counter
         self.pc += 4;
         return false;

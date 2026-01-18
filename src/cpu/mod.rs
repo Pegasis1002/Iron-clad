@@ -1,5 +1,6 @@
 pub mod step;
 pub mod decode;
+pub mod exec;
 
 use crate::models::bus::BUS;
 use crate::models::cpu::CPU;
