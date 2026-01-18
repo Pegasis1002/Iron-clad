@@ -54,19 +54,31 @@ version: 1.1.1
 
     @code rust
     impl CPU {
-      pub(crate) fn step(&self) {
+      pub(crate) fn step(&mut self) -> bool {
         // Fetch Instruction from memory
-        let op_code = BUS::read_word(self.pc);
+        let inst = self.bus.read_word(self.pc);
 
-        // Decode and Exec the Instruction
+        // Decode Instruction
+        let decoded_instruction: DecodeInst = self.decode(inst);
+
+        if decoded_instruction.op_code == 0x0 {
+            return true;
+        }
+
+        println!("Instruction at {:#X} = {:#010X}", self.pc, inst);
+        println!("Decoded Instruction: {:?}", decoded_instruction);
 
         // Increament Program counter
         self.pc += 4;
+        return false;
       }
     }
     @end
 
-    - Fetch the optcode
+    - Fetch the optcode from BUS.
+    - Decode the instruction using `decode` method.
+    - If opcode is 0, return `true` (indicating stop/halt).
+    - Otherwise, print debug info, increment PC by 4, and return `false`.
     - The decoding logic is explained {:/home/dfg/code/RISC-V/iron-clad/docs/specs/004-decoding.norg:}[here.]
 
 * 7. Notes & Open Questions

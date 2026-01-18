@@ -25,15 +25,20 @@ version: 1.1.1
      |_src
      | |_cpu
      | | |_mod.rs
-     | | |_more-cpu-logic
+     | | |_step.rs
+     | | |_decode
+     | |   |_mod.rs
      | |_bus
      | | |_mod.rs
-     | | |_ram.rs
-     | | |_other-interfaces
+     | | |_ram
+     | |   |_mod.rs
+     | |   |_load_binary.rs
+     | |   |_read_word.rs
      | |_models
      |   |_mod.rs
      |   |_cpu.rs
-     |   |_other-models
+     |   |_bus.rs
      |_Cargo.toml
      |_main.rs
      @end
+

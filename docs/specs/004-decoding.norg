@@ -4,17 +4,69 @@ description:
 authors: dfg
 categories: 
 created: 2025-12-30T22:25:13+0530
-updated: 2025-12-31T17:58:32+0530
+updated: 2026-01-18T18:04:37+0530
 version: 1.1.1
 @end
 
 
-* Summary
+* 1. Summary
   - Decoding instruction means we are taking it apart and returning the relevent parts via a struct
   - There are 7 Formats for base integer instruction. 
 
-* Logic and Implementation
-*** Parts of instruction
-    - A standard instruction has a opcode (0-6 bits)
-    - 
+* 2. Logic and Implementation
+*** 2.1 DecodeInst Struct
+    The decoded instruction is represented by the `DecodeInst` struct:
 
+    @code rust
+    pub struct DecodeInst {
+        pub(crate) op_code: u8,
+        pub(crate) rd: u8,
+        pub(crate) rs1: u8,
+        pub(crate) rs2: u8,
+        pub(crate) funct3: u8,
+        pub(crate) funct7: u8,
+        pub(crate) imm: i32,
+    }
+    @end
+
+*** 2.2 Parts of instruction
+    The instruction for RV32I base integer Instruction set may have the following parts:
+    - Opcode: All the formats have a opcode, is the 7-bits at the very start of the instruction.
+    - rd: the destination register, where the output of the operation is stored
+    - rs1 & rs2: source registers.
+    - funct3 & funct7: Used to differentiate between instrucitons of the same format.
+    - imm: The immidiate data upon which the operation is to be performed.
+
+*** 2.3 Formats of Instructions
+
+    The decoder handles the following formats based on Opcode:
+
+**** I-type (Opcode 0x13)
+     - Used for Immediate arithmetic/logic.
+     - Extracts: `rd`, `rs1`, `imm` (12-bit), `funct3`.
+     - `rs2` and `funct7` are 0.
+
+**** R-type (Opcode 0x33)
+     - Used for Register-Register operations.
+     - Extracts: `rd`, `rs1`, `rs2`, `funct3`, `funct7`.
+     - `imm` is 0.
+
+**** U-type (Opcode 0x37)
+     - Used for Upper Immediate (LUI).
+     - Extracts: `rd`, `imm` (20-bit upper).
+     - `rs1`, `rs2`, `funct3`, `funct7` are 0.
+
+**** S-type (Opcode 0x23)
+     - Used for Store operations.
+     - Extracts: `rs1`, `rs2`, `funct3`, `imm` (split 12-bit).
+     - `rd` and `funct7` are 0.
+
+**** B-type (Opcode 0x63)
+     - Used for Branch operations.
+     - Extracts: `rs1`, `rs2`, `funct3`, `imm` (13-bit signed, split).
+     - `rd` and `funct7` are 0.
+
+**** J-type (Opcode 0x6F)
+     - Used for Jump (JAL).
+     - Extracts: `rd`, `imm` (21-bit signed, scrambled).
+     - `rs1`, `rs2`, `funct3`, `funct7` are 0.
