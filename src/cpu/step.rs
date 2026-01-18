@@ -1,15 +1,23 @@
 use crate::models::cpu::CPU;
+use crate::cpu::decode::DecodeInst;
 
 impl CPU {
-    pub(crate) fn step(&mut self) {
+    pub(crate) fn step(&mut self) -> bool {
         //Fetch Instruction
-        let op_code = self.bus.read_word(self.pc);
+        let inst = self.bus.read_word(self.pc);
 
-        println!("Instruction at {:#X} = {:#010X}", self.pc, op_code);
-        // Decode OP_code
-        self.decode(op_code);
+        // Decode Instruction
+        let decoded_instruction: DecodeInst = self.decode(inst);
+
+        if decoded_instruction.op_code == 0x0 {
+            return true;
+        }
+
+        println!("Instruction at {:#X} = {:#010X}", self.pc, inst);
+        println!("Decoded Instruction: {:?}", decoded_instruction);
 
         //Increament Program counter
         self.pc += 4;
+        return false;
     }
 }

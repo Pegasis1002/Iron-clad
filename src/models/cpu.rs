@@ -1,5 +1,6 @@
 use crate::models::bus::BUS;
 
+#[allow(dead_code)]
 pub(crate) struct CPU {
     pub(crate) pc: u32,
     pub(crate) reg: [u32; 32],

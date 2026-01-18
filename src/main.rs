@@ -33,7 +33,10 @@ fn main() {
 
     let mut i = 0;
     while i <=15 {
-        CPU::step(&mut iron_clad);
+        if CPU::step(&mut iron_clad){
+            print!("INFO: End of Program reached!");
+            break;
+        }
         i += 1;
     }
 }

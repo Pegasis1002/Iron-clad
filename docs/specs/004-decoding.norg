@@ -1,0 +1,20 @@
+@document.meta
+title: 004-decoding
+description: 
+authors: dfg
+categories: 
+created: 2025-12-30T22:25:13+0530
+updated: 2025-12-31T17:58:32+0530
+version: 1.1.1
+@end
+
+
+* Summary
+  - Decoding instruction means we are taking it apart and returning the relevent parts via a struct
+  - There are 7 Formats for base integer instruction. 
+
+* Logic and Implementation
+*** Parts of instruction
+    - A standard instruction has a opcode (0-6 bits)
+    - 
+

@@ -67,6 +67,8 @@ version: 1.1.1
     @end
 
     - Fetch the optcode
+    - The decoding logic is explained {:/home/dfg/code/RISC-V/iron-clad/docs/specs/004-decoding.norg:}[here.]
+
 * 7. Notes & Open Questions
 - {Any miscellaneous notes, design trade-offs considered, 
 questions that need to be resolved.}
