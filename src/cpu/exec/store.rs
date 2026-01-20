@@ -1,4 +1,5 @@
 use crate::cpu::decode::DecodeInst;
+use crate::models::bus::BUS;
 use crate::models::cpu::CPU;
 
 pub(crate) fn exec_store(cpu: &mut CPU, inst: DecodeInst){
@@ -10,7 +11,8 @@ pub(crate) fn exec_store(cpu: &mut CPU, inst: DecodeInst){
 
 fn sw(cpu: &mut CPU, inst: DecodeInst) {
     let rs1_val = cpu.reg[inst.rs1 as usize];
-    let addr = inst.imm + rs1_val as i32;
+    let addr = (inst.imm + rs1_val as i32) as u32;
+    let data = inst.imm as u32;
 
-    println!("Memory at {:#010X} = {:#010X}", addr as u32, cpu.bus.ram[addr as usize])
+    BUS::write(&mut cpu.bus, addr, data);
 }

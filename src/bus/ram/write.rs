@@ -1,23 +1,22 @@
 use crate::models::bus::BUS;
 
 impl BUS {
-    pub(crate) fn read_word( &self, addr: u32) -> u32 {
+    pub(crate) fn write(&mut self, addr: u32, data: u32) {
+        let bytes = data.to_le_bytes();
         if addr < 0x8000_0000 {
             println!("Memory Access Error: Address {:#X} is below RAM start.", addr);
-            return 0x0;
+            return;
         }
 
         let index = (addr - 0x8000_0000) as usize;
         if index + 3 >= self.ram.len() {
             println!("Memory Access Error: Address {:#X} is out of RAM bounds.", addr);
-            return 0x0;
+            return;
         }
 
-        let b0 = self.ram[index] as u32;
-        let b1 = self.ram[index + 1] as u32;
-        let b2 = self.ram[index + 2] as u32;
-        let b3 = self.ram[index + 3] as u32;
-
-        return (b3 << 24) | (b2 << 16) | (b1 << 8) | b0;
+        self.ram[index] = bytes[0];
+        self.ram[index + 1] = bytes[1];
+        self.ram[index + 2] = bytes[2];
+        self.ram[index + 3] = bytes[3];
     }
 }
