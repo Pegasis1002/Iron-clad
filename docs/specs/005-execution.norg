@@ -1,0 +1,61 @@
+@document.meta
+title: 005-execution
+description: Details the execution stage of the CPU, including instruction dispatch and specific operation handling.
+authors: dfg
+categories: 
+created: 2026-01-21T00:00:00+0530
+updated: 2026-01-21T00:00:00+0530
+version: 1.0.0
+@end
+
+* 1. Summary
+  The execution stage follows the Fetch and Decode stages. Once an instruction is decoded into the `DecodeInst` struct, the CPU's `execute` method determines which specific operation to perform. This logic is modularized into separate files based on instruction type or function.
+
+* 2. Dispatch Logic
+  The `execute` method in `src/cpu/exec/mod.rs` acts as the central dispatcher. It matches the `op_code` from the decoded instruction and calls the appropriate handler function.
+
+  @code rust
+  pub(crate) fn execute(&mut self, inst: DecodeInst) {
+      match inst.op_code {
+          0x13 => exec_imm(self, inst),   // I-Type: Integer Immediate
+          0x33 => exec_reg(self, inst),   // R-Type: Register-Register
+          0x37 => exec_lui(self, inst),   // U-Type: Load Upper Immediate
+          0x23 => exec_store(self, inst), // S-Type: Store
+          0x63 => {},                     // B-Type: Branch (Pending Integration)
+          0x6F => {},                     // J-Type: Jump (Pending Integration)
+          _ => panic!("UnImplemented opcode: {:#010X}", inst.op_code),
+      }
+  }
+  @end
+
+* 3. Implemented Instruction Classes
+
+*** 3.1 Integer Immediate (I-Type, Opcode 0x13)
+    - **Handler**: `exec_imm` (in `src/cpu/exec/imm.rs`)
+    - **Function**: Performs arithmetic or logical operations between a source register (`rs1`) and a sign-extended immediate value (`imm`).
+    - **Result**: Stored in the destination register (`rd`).
+    - **Operations**: ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI.
+
+*** 3.2 Register-Register (R-Type, Opcode 0x33)
+    - **Handler**: `exec_reg` (in `src/cpu/exec/reg.rs`)
+    - **Function**: Performs arithmetic or logical operations between two source registers (`rs1` and `rs2`).
+    - **Result**: Stored in the destination register (`rd`).
+    - **Operations**: ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND.
+
+*** 3.3 Load Upper Immediate (U-Type, Opcode 0x37)
+    - **Handler**: `exec_lui` (in `src/cpu/exec/lui.rs`)
+    - **Function**: Loads the 20-bit immediate value into the upper 20 bits of the destination register (`rd`), filling the lower 12 bits with zeros.
+    - **Usage**: Used to construct large constants or addresses.
+
+*** 3.4 Store (S-Type, Opcode 0x23)
+    - **Handler**: `exec_store` (in `src/cpu/exec/store.rs`)
+    - **Function**: Stores a value from a source register (`rs2`) into memory at an address calculated by `rs1` + `imm` (offset).
+    - **Operations**:
+        - `SB` (Store Byte): Writes 8 bits.
+        - `SH` (Store Halfword): Writes 16 bits.
+        - `SW` (Store Word): Writes 32 bits.
+
+* 4. Pending Implementations
+  The following instruction types have decoding support and file structures (`src/cpu/exec/branch.rs`, `src/cpu/exec/jal.rs`) but are not yet fully hooked up in the main dispatch loop:
+  - **Branch (B-Type, Opcode 0x63)**: Conditional jumps (BEQ, BNE, BLT, BGE, BLTU, BGEU).
+  - **Jump and Link (J-Type, Opcode 0x6F)**: Unconditional jump (JAL).

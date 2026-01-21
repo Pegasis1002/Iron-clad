@@ -80,6 +80,22 @@ version: 1.1.1
     }
     @end
 
+*** 4.4 Write Word
+    - Writes a 32-bit word to memory.
+    - Splits the 32-bit integer into 4 bytes (Little-Endian).
+    - Checks bounds to ensure the write is within the valid RAM range (starting at `0x8000_0000`).
+
+    @code rust
+    pub(crate) fn write(&mut self, addr: u32, data: u32) {
+        let bytes = data.to_le_bytes();
+        // Bounds checking logic...
+        self.ram[index] = bytes[0];
+        self.ram[index + 1] = bytes[1];
+        self.ram[index + 2] = bytes[2];
+        self.ram[index + 3] = bytes[3];
+    }
+    @end
+
 
 * 7. Notes & Open Questions
 - {Any miscellaneous notes, design trade-offs considered, 

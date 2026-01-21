@@ -68,6 +68,9 @@ version: 1.1.1
         println!("Instruction at {:#X} = {:#010X}", self.pc, inst);
         println!("Decoded Instruction: {:?}", decoded_instruction);
 
+        // Execute Instruction
+        self.execute(decoded_instruction);
+
         // Increament Program counter
         self.pc += 4;
         return false;
@@ -78,8 +81,9 @@ version: 1.1.1
     - Fetch the optcode from BUS.
     - Decode the instruction using `decode` method.
     - If opcode is 0, return `true` (indicating stop/halt).
-    - Otherwise, print debug info, increment PC by 4, and return `false`.
-    - The decoding logic is explained {:/home/dfg/code/RISC-V/iron-clad/docs/specs/004-decoding.norg:}[here.]
+    - Execute the instruction using `execute` method (see {./005-execution.norg}).
+    - Increment PC by 4, and return `false`.
+    - The decoding logic is explained {./004-decoding.norg:}[here.]
 
 * 7. Notes & Open Questions
 - {Any miscellaneous notes, design trade-offs considered, 

@@ -41,8 +41,8 @@ version: 1.1.1
 
     The decoder handles the following formats based on Opcode:
 
-**** I-type (Opcode 0x13)
-     - Used for Immediate arithmetic/logic.
+**** I-type (Opcode 0x13, 0x03)
+     - Used for Immediate arithmetic/logic (0x13) and Load operations (0x03).
      - Extracts: `rd`, `rs1`, `imm` (12-bit), `funct3`.
      - `rs2` and `funct7` are 0.
 
