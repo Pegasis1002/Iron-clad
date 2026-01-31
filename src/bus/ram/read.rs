@@ -11,17 +11,17 @@ impl BUS{
             return 0x0;
         }
 
-        let mut index = (addr - 0x8000_0000) as usize;
-        if index + bytes >= self.ram.len() {
+        let index = (addr - 0x8000_0000) as usize;
+        if index + bytes > self.ram.len() {
             println!("memory access error: address {:#x} is out of ram bounds.", addr);
             return 0x0;
         }
 
-        let mut buff = vec![0u8; 4];
+        let mut buff: [u8; 4] = [0u8; 4];
         for i in 0..bytes {
-            buff[i] = self.ram[index + 1];
+            buff[i] = self.ram[index + i];
         }
 
-        u32::from_le_bytes(buff);
+        u32::from_le_bytes(buff)
     }
 }
