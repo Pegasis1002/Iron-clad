@@ -20,7 +20,7 @@ impl CPU {
         // match The opcode to a format
         match op_code {
             // I-type
-            0x13|0x03 => {
+            0x13|0x03|0x67 => {
                 return DecodeInst {
                     op_code: op_code,
                     rd: ((inst >> 7) & 0x1F) as u8,
@@ -45,7 +45,7 @@ impl CPU {
                 }
             },
             // U-type
-            0x37 => {
+            0x17|0x37 => {
                 return DecodeInst {
                     op_code,
                     rd: ((inst >> 7) & 0x1F) as u8,
@@ -89,6 +89,7 @@ impl CPU {
                     funct7: 0x0
                 }
             },
+            // J-Type
             0x6F => {
                 let sign = (inst >> 31) as u32;
                 let hitch_hicker = ((inst >> 20) & 0x1) as u32;
@@ -98,7 +99,7 @@ impl CPU {
 
                 return DecodeInst {
                     op_code,
-                    rd: ((inst >> 6) & 0x1F) as u8,
+                    rd: ((inst >> 7) & 0x1F) as u8,
                     imm: ((imm as i32) << 11) >> 11,
                     rs1: 0x0,
                     rs2: 0x0,
@@ -107,6 +108,7 @@ impl CPU {
                 }
             },
             _ => {
+                println!("ERROR: Invalid or UnImplemented Instruction.");
                 return DecodeInst { op_code: 0x0, rd: 0x0, rs1: 0x0, rs2: 0x0, funct3: 0x0, funct7: 0x0, imm: 0x0 };
             }
         }
