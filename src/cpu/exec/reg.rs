@@ -1,7 +1,13 @@
 use crate::cpu::decode::DecodeInst;
 use crate::models::cpu::CPU;
+use crate::cpu::exec::m_ext::exec_m_ext;
 
 pub(crate) fn exec_reg(cpu: &mut CPU, inst: DecodeInst){
+    if inst.funct7 == 0x1 {
+        exec_m_ext(cpu, inst);
+        return;
+    }
+
     match inst.funct3 {
         0x0 => match inst.funct7 {
             0x0 => add(cpu, inst),

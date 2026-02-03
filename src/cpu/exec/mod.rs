@@ -1,3 +1,4 @@
+use crate::cpu::exec::m_ext::exec_m_ext;
 use crate::models::cpu::CPU;
 use crate::cpu::decode::DecodeInst;
 
@@ -11,6 +12,7 @@ mod branch;
 mod jal;
 mod jalr;
 mod system;
+mod m_ext;
 
 use imm::exec_imm;
 use lui::exec_lui;
@@ -29,7 +31,13 @@ impl CPU {
             0x3 => exec_load(self, inst),
             0x13 => exec_imm(self, inst),
             0x17 => exec_auipc(self, inst),
-            0x33 => exec_reg(self, inst),
+            0x33 => {
+                if inst.funct7 == 0x01 {
+                    exec_m_ext(self, inst);
+                } else {
+                    exec_reg(self, inst);
+                }
+            },
             0x37 => exec_lui(self, inst),
             0x23 => exec_store(self, inst),
             0x63 => exec_branch(self, inst),
