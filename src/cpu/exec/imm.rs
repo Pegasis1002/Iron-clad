@@ -30,7 +30,7 @@ fn addi(cpu: &mut CPU, inst: DecodeInst) {
         // This will not do that, and instead wraparoud like the hardware does
         let rs1_val = cpu.reg[inst.rs1 as usize] as i32;
         cpu.reg[rd] = rs1_val.wrapping_add(inst.imm) as u32;
-        println!("r{} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{} = {:#010X}", rd, cpu.reg[rd]);
     }
 }
 
@@ -39,7 +39,7 @@ fn xori(cpu: &mut CPU, inst: DecodeInst) {
     if rd != 0 {
         let rs1_val = cpu.reg[inst.rs1 as usize] as i32;
         cpu.reg[rd] = (rs1_val ^ inst.imm) as u32;
-        println!("r{} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{} = {:#010X}", rd, cpu.reg[rd]);
     }
 }
 
@@ -49,7 +49,7 @@ fn slti(cpu: &mut CPU, inst: DecodeInst) {
         let rs1_val = cpu.reg[inst.rs1 as usize] as i32;
         cpu.reg[rd] = (rs1_val < inst.imm) as u32;
 
-        println!("r{} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{} = {:#010X}", rd, cpu.reg[rd]);
     }
 }
 
@@ -59,7 +59,7 @@ fn sltiu(cpu: &mut CPU, inst: DecodeInst) {
         let rs1_val = cpu.reg[inst.rs1 as usize] as u32;
         cpu.reg[rd] = (rs1_val < inst.imm as u32) as u32;
 
-        println!("r{} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{} = {:#010X}", rd, cpu.reg[rd]);
     }
 }
 
@@ -68,7 +68,7 @@ fn ori(cpu: &mut CPU, inst: DecodeInst) {
     if rd != 0 {
         let rs1_val = cpu.reg[inst.rs1 as usize] as i32;
         cpu.reg[rd] = (rs1_val | inst.imm) as u32;
-        println!("r{} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{} = {:#010X}", rd, cpu.reg[rd]);
     }
 }
 
@@ -77,7 +77,7 @@ fn andi(cpu: &mut CPU, inst: DecodeInst) {
     if rd != 0 {
         let rs1_val = cpu.reg[inst.rs1 as usize] as i32;
         cpu.reg[rd] = (rs1_val & inst.imm) as u32;
-        println!("r{} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{} = {:#010X}", rd, cpu.reg[rd]);
     }
 }
 
@@ -87,7 +87,7 @@ fn slli(cpu: &mut CPU, inst: DecodeInst) {
         let rs1_val = cpu.reg[inst.rs1 as usize] as i32;
         let shamt = inst.imm & 0x1F;
         cpu.reg[rd] = (rs1_val << shamt) as u32;
-        println!("r{} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{} = {:#010X}", rd, cpu.reg[rd]);
     }
 }
 
@@ -97,7 +97,7 @@ fn srli(cpu: &mut CPU, inst: DecodeInst) {
         let rs1_val = cpu.reg[inst.rs1 as usize] as u32;
         let shamt = (inst.imm & 0x1F) as u32;
         cpu.reg[rd] = rs1_val >> shamt;
-        println!("r{} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{} = {:#010X}", rd, cpu.reg[rd]);
     }
 }
 
@@ -107,6 +107,6 @@ fn srai(cpu: &mut CPU, inst: DecodeInst) {
         let rs1_val = cpu.reg[inst.rs1 as usize] as i32;
         let shamt = inst.imm & 0x1F as i32;
         cpu.reg[rd] = (rs1_val >> shamt) as u32;
-        println!("r{} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{} = {:#010X}", rd, cpu.reg[rd]);
     }
 }

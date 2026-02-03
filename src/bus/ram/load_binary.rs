@@ -2,6 +2,7 @@ use crate::models::bus::BUS;
 
 use std::io::Read;
 
+#[allow(dead_code)]
 impl BUS {
     pub fn load_binary(&mut self, path: &str) -> std::io::Result<()> {
         let mut file = std::fs::File::open(path)?;

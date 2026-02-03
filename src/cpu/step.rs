@@ -3,7 +3,7 @@ use crate::cpu::decode::DecodeInst;
 
 impl CPU {
     pub(crate) fn step(&mut self) -> bool {
-        println!("---------------------------------------------\n");
+        // println!("---------------------------------------------\n");
         //Fetch Instruction
         let inst = self.bus.read_word(self.pc);
 
@@ -15,14 +15,14 @@ impl CPU {
             return true;
         }
 
-        println!("Instruction at {:#X} = {:#010X}", self.pc, inst);
-        println!("Decoded Instruction: {:?}", decoded_instruction);
+        // println!("Instruction at {:#X} = {:#010X}", self.pc, inst);
+        // println!("Decoded Instruction: {:?}", decoded_instruction);
 
         self.execute(decoded_instruction);
         
         //Increament Program counter
         self.pc += 4;
-        println!("");
+        // println!("");
         return false;
     }
 }

@@ -3,6 +3,14 @@ use crate::models::bus::BUS;
 impl BUS {
     pub(crate) fn write(&mut self, addr: u32, data: u32) {
         let bytes = data.to_le_bytes();
+
+        if addr == 0x1000_0000 {
+            print!("{}", (data & 0xFF) as u8 as char);
+            use std::io::{self, Write};
+            let _ = io::stdout().flush();
+            return; // Don't try to write this to RAM!
+        }
+
         if addr < 0x8000_0000 {
             println!("Memory Access Error: Address {:#X} is below RAM start.", addr);
             return;

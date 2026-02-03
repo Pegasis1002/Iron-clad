@@ -20,7 +20,7 @@ fn lb(cpu: &mut CPU, inst: DecodeInst) {
 
         let se_data: i32 = ((data as i32) << 24 ) >> 24;
         cpu.reg[rd] = se_data as u32;
-        println!("r{:?} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{:?} = {:#010X}", rd, cpu.reg[rd]);
     } else {
         println!("Error: rd cannot be x0");
     }
@@ -34,7 +34,7 @@ fn lh(cpu: &mut CPU, inst: DecodeInst) {
 
         let se_data: i32 = ((data as i32) << 16) >> 16;
         cpu.reg[rd] = se_data as u32;
-        println!("r{:?} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{:?} = {:#010X}", rd, cpu.reg[rd]);
     } else {
         println!("Error: rd cannot be x0");
     }
@@ -47,7 +47,7 @@ fn lw(cpu: &mut CPU, inst: DecodeInst) {
         let data = cpu.bus.read(addr, 4);
 
         cpu.reg[rd] = data as u32;
-        println!("r{:?} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{:?} = {:#010X}", rd, cpu.reg[rd]);
     } else {
         println!("Error: rd cannot be x0");
     }
@@ -60,7 +60,7 @@ fn lbu(cpu: &mut CPU, inst: DecodeInst) {
         let data = (cpu.bus.read(addr, 4) & 0xFF) as u8;
 
         cpu.reg[rd] = data as u32;
-        println!("r{:?} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{:?} = {:#010X}", rd, cpu.reg[rd]);
     } else {
         println!("Error: rd cannot be x0");
     }
@@ -73,7 +73,7 @@ fn lhu(cpu: &mut CPU, inst: DecodeInst) {
         let data = (cpu.bus.read(addr, 4) & 0xFFFF) as u16;
 
         cpu.reg[rd] = data as u32;
-        println!("r{:?} = {:#010X}", rd, cpu.reg[rd]);
+        // println!("r{:?} = {:#010X}", rd, cpu.reg[rd]);
     } else {
         println!("Error: rd cannot be x0");
     }

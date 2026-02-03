@@ -18,16 +18,21 @@ fn main() {
     let bin_path = &args[1];
 
     // initialize bus
-    let mut hardware_bus = BUS::new();
-
+    let hardware_bus = BUS::new();
+    /*
     // Load the binary into RAM
     if let Err(e) = hardware_bus.load_binary(&bin_path) {
         eprintln!("Failed to load binary '{}': {}", bin_path, e);
         return;
-    }
+    }*/
 
     // Initialize CPU
     let mut iron_clad = CPU::new(hardware_bus);
+
+    let entry_point = iron_clad.bus.load_elf(bin_path);
+    iron_clad.pc = entry_point;
+
+    iron_clad.reg[2] = 0x8000_0000 + (128 * 1024 * 1024) as u32;
 
     println!("CPU Initialized! PC start at {:#X}", iron_clad.pc);
 

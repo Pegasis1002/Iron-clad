@@ -32,7 +32,7 @@ fn add(cpu: &mut CPU, inst: DecodeInst) {
         let rs2 = inst.rs2 as usize;
         //cpu.reg[rd] = (cpu.reg[rs1] as i32 + cpu.reg[rs2] as i32) as u32;
         cpu.reg[rd] = cpu.reg[rs1].wrapping_add(cpu.reg[rs2]);
-        println!("r{} = {}", rd, cpu.reg[rd])
+        // println!("r{} = {}", rd, cpu.reg[rd])
     }
 }
 
@@ -44,7 +44,7 @@ fn sub(cpu: &mut CPU, inst: DecodeInst) {
 
         //cpu.reg[rd] = cpu.reg[rs1] - cpu.reg[rs2];
         cpu.reg[rd] = cpu.reg[rs1].wrapping_sub(cpu.reg[rs2]);
-        println!("r{} = {}", rd, cpu.reg[rd])
+        // println!("r{} = {}", rd, cpu.reg[rd])
     }
 }
 
@@ -58,7 +58,7 @@ fn slt(cpu: &mut CPU, inst: DecodeInst) {
         } else {
             cpu.reg[rd] = 0x0;
         }
-        println!("r{} = {}", rd, cpu.reg[rd])
+        // println!("r{} = {}", rd, cpu.reg[rd])
     }
 }
 
@@ -72,7 +72,7 @@ fn sltu(cpu: &mut CPU, inst: DecodeInst) {
         } else {
             cpu.reg[rd] = 0x0;
         }
-        println!("r{} = {}", rd, cpu.reg[rd])
+        // println!("r{} = {}", rd, cpu.reg[rd])
     }
 }
 
@@ -83,7 +83,7 @@ fn sll(cpu: &mut CPU, inst: DecodeInst){
         let rs2 = inst.rs2 as usize;
 
         cpu.reg[rd] = (cpu.reg[rs1] << (cpu.reg[rs2] & 0x1F)) as u32;
-        println!("r{} = {}", rd, cpu.reg[rd])
+        // println!("r{} = {}", rd, cpu.reg[rd])
     }
 }
 
@@ -94,7 +94,7 @@ fn slr(cpu: &mut CPU, inst: DecodeInst){
         let rs2 = inst.rs2 as usize;
 
         cpu.reg[rd] = (cpu.reg[rs1] >> (cpu.reg[rs2] & 0x1F)) as u32;
-        println!("r{} = {}", rd, cpu.reg[rd])
+        // println!("r{} = {}", rd, cpu.reg[rd])
     }
 }
 
@@ -105,7 +105,7 @@ fn sla(cpu: &mut CPU, inst: DecodeInst){
         let rs2 = inst.rs2 as usize;
 
         cpu.reg[rd] = ((cpu.reg[rs1] as i32) >> (cpu.reg[rs2] as i32 & 0x1F)) as u32;
-        println!("r{} = {}", rd, cpu.reg[rd])
+        // println!("r{} = {}", rd, cpu.reg[rd])
     }
 }
 
@@ -116,7 +116,7 @@ fn and(cpu: &mut CPU, inst: DecodeInst) {
         let rs2 = inst.rs2 as usize;
 
         cpu.reg[rd] = cpu.reg[rs1] & cpu.reg[rs2];
-        println!("r{} = {}", rd, cpu.reg[rd])
+        // println!("r{} = {}", rd, cpu.reg[rd])
     }
 }
 
@@ -127,7 +127,7 @@ fn or(cpu: &mut CPU, inst: DecodeInst) {
         let rs2 = inst.rs2 as usize;
 
         cpu.reg[rd] = cpu.reg[rs1] | cpu.reg[rs2];
-        println!("r{} = {}", rd, cpu.reg[rd])
+        // println!("r{} = {}", rd, cpu.reg[rd])
     }
 }
 
@@ -138,6 +138,6 @@ fn xor(cpu: &mut CPU, inst: DecodeInst) {
         let rs2 = inst.rs2 as usize;
 
         cpu.reg[rd] = cpu.reg[rs1] ^ cpu.reg[rs2];
-        println!("r{} = {}", rd, cpu.reg[rd])
+        // println!("r{} = {}", rd, cpu.reg[rd])
     }
 }

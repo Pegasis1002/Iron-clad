@@ -19,7 +19,7 @@ fn sw(cpu: &mut CPU, inst: DecodeInst) {
     let data = cpu.reg[rs2] as u32;
 
     BUS::write(&mut cpu.bus, addr, data);
-    println!("r{} = {:#010X}", rs2, cpu.reg[rs2 as usize]);
+    // println!("r{} = {:#010X}", rs2, cpu.reg[rs2 as usize]);
 }
 
 fn sh(cpu: &mut CPU, inst: DecodeInst) {
@@ -30,7 +30,7 @@ fn sh(cpu: &mut CPU, inst: DecodeInst) {
     let data = (cpu.reg[rs2] & 0xFFFF) as u32;
 
     BUS::write(&mut cpu.bus, addr, data);
-    println!("r{} = {:#010X}", rs2, cpu.reg[rs2]);
+    // println!("r{} = {:#010X}", rs2, cpu.reg[rs2]);
 }
 
 fn sb(cpu: &mut CPU, inst: DecodeInst) {
@@ -41,5 +41,5 @@ fn sb(cpu: &mut CPU, inst: DecodeInst) {
     let data = (cpu.reg[rs2] & 0xFF) as u32;
 
     BUS::write(&mut cpu.bus, addr, data);
-    println!("r{} = {:#010X}", rs2, cpu.reg[rs2]);
+    // println!("r{} = {:#010X}", rs2, cpu.reg[rs2]);
 }

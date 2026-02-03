@@ -20,7 +20,7 @@ fn beq(cpu: &mut CPU, inst: DecodeInst) {
 
     if cpu.reg[rs1] == cpu.reg[rs2] {
         cpu.pc = addr.wrapping_sub(4);
-        println!("Branch jump to {:#010X}", addr);
+        // println!("Branch jump to {:#010X}", addr);
     }
 }
 
@@ -31,7 +31,7 @@ fn bne(cpu: &mut CPU, inst: DecodeInst) {
 
     if cpu.reg[rs1] != cpu.reg[rs2] {
         cpu.pc = addr.wrapping_sub(4);
-        println!("Branch jump to {:#010X}", addr);
+        // println!("Branch jump to {:#010X}", addr);
     }
 }
 
@@ -42,7 +42,7 @@ fn blt(cpu: &mut CPU, inst: DecodeInst) {
 
     if (cpu.reg[rs1] as i32) < (cpu.reg[rs2] as i32){
         cpu.pc = addr.wrapping_sub(4);
-        println!("Branch jump to {:#010X}", addr);
+        // println!("Branch jump to {:#010X}", addr);
     }
 }
 
@@ -53,7 +53,7 @@ fn bltu(cpu: &mut CPU, inst: DecodeInst) {
 
     if (cpu.reg[rs1] as u32) < (cpu.reg[rs2] as u32){
         cpu.pc = addr.wrapping_sub(4);
-        println!("Branch jump to {:#010X}", addr);
+        // println!("Branch jump to {:#010X}", addr);
     }
 }
 
@@ -64,7 +64,7 @@ fn bge(cpu: &mut CPU, inst: DecodeInst) {
 
     if (cpu.reg[rs1] as i32) >= (cpu.reg[rs2] as i32){
         cpu.pc = addr.wrapping_sub(4);
-        println!("Branch jump to {:#010X}", addr);
+        // println!("Branch jump to {:#010X}", addr);
     }
 }
 
@@ -75,6 +75,6 @@ fn bgeu(cpu: &mut CPU, inst: DecodeInst) {
 
     if (cpu.reg[rs1] as u32) >= (cpu.reg[rs2] as u32){
         cpu.pc = addr.wrapping_sub(4);
-        println!("Branch jump to {:#010X}", addr);
+        // println!("Branch jump to {:#010X}", addr);
     }
 }

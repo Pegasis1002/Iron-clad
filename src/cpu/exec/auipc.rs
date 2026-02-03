@@ -8,5 +8,5 @@ pub(crate) fn exec_auipc(cpu: &mut CPU, inst: DecodeInst) {
     }
     let offset: u32 = ((inst.imm << 12) + cpu.pc as i32) as u32;
     cpu.reg[rd] = offset;
-    println!("r{} = {:#010X}", rd, cpu.reg[rd]);
+    // println!("r{} = {:#010X}", rd, cpu.reg[rd]);
 }
