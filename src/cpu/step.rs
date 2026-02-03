@@ -11,6 +11,7 @@ impl CPU {
         let decoded_instruction: DecodeInst = self.decode(inst);
 
         if decoded_instruction.op_code == 0x0 {
+            println!("op_code = 0x0, Exiting! \n"); 
             return true;
         }
 
