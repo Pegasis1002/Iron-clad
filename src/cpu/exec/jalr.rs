@@ -8,7 +8,7 @@ pub(crate) fn exec_jalr(cpu: &mut CPU, inst: DecodeInst) {
         cpu.reg[inst.rd as usize] = link_addr;
     }
 
-    if addr % 2 != 0{
+    if addr % 4 != 0{
         println!("ERROR: Target address missaligned!");
         return;
     }

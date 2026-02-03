@@ -31,12 +31,11 @@ fn main() {
 
     println!("CPU Initialized! PC start at {:#X}", iron_clad.pc);
 
-    let mut i = 0;
-    while i < 50 {
+    let mut exit = false;
+    while !exit {
         if CPU::step(&mut iron_clad) {
             print!("INFO: End of Program reached!");
-            break;
+            exit = true;
         }
-        i += 1;
     }
 }
