@@ -6,6 +6,7 @@ pub(crate) fn exec_branch(cpu: &mut CPU, inst: DecodeInst) {
         0x1 => bne(cpu, inst),
         0x4 => blt(cpu, inst),
         0x5 => bge(cpu, inst),
+        0x7 => bgeu(cpu, inst),
         0x6 => bltu(cpu, inst),
 
         _ => panic!("Invalid B-type funct3 for Imm: {}", inst.funct3),
@@ -18,7 +19,7 @@ fn beq(cpu: &mut CPU, inst: DecodeInst) {
     let rs2 = inst.rs2 as usize;
 
     if cpu.reg[rs1] == cpu.reg[rs2] {
-        cpu.pc = addr;
+        cpu.pc = addr.wrapping_sub(4);
         println!("Branch jump to {:#010X}", addr);
     }
 }
@@ -29,7 +30,7 @@ fn bne(cpu: &mut CPU, inst: DecodeInst) {
     let rs2 = inst.rs2 as usize;
 
     if cpu.reg[rs1] != cpu.reg[rs2] {
-        cpu.pc = addr;
+        cpu.pc = addr.wrapping_sub(4);
         println!("Branch jump to {:#010X}", addr);
     }
 }
@@ -40,7 +41,7 @@ fn blt(cpu: &mut CPU, inst: DecodeInst) {
     let rs2 = inst.rs2 as usize;
 
     if (cpu.reg[rs1] as i32) < (cpu.reg[rs2] as i32){
-        cpu.pc = addr;
+        cpu.pc = addr.wrapping_sub(4);
         println!("Branch jump to {:#010X}", addr);
     }
 }
@@ -51,7 +52,7 @@ fn bltu(cpu: &mut CPU, inst: DecodeInst) {
     let rs2 = inst.rs2 as usize;
 
     if (cpu.reg[rs1] as u32) < (cpu.reg[rs2] as u32){
-        cpu.pc = addr;
+        cpu.pc = addr.wrapping_sub(4);
         println!("Branch jump to {:#010X}", addr);
     }
 }
@@ -62,7 +63,7 @@ fn bge(cpu: &mut CPU, inst: DecodeInst) {
     let rs2 = inst.rs2 as usize;
 
     if (cpu.reg[rs1] as i32) >= (cpu.reg[rs2] as i32){
-        cpu.pc = addr;
+        cpu.pc = addr.wrapping_sub(4);
         println!("Branch jump to {:#010X}", addr);
     }
 }
@@ -73,7 +74,7 @@ fn bgeu(cpu: &mut CPU, inst: DecodeInst) {
     let rs2 = inst.rs2 as usize;
 
     if (cpu.reg[rs1] as u32) >= (cpu.reg[rs2] as u32){
-        cpu.pc = addr;
+        cpu.pc = addr.wrapping_sub(4);
         println!("Branch jump to {:#010X}", addr);
     }
 }

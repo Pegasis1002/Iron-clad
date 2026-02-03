@@ -14,6 +14,6 @@ pub(crate) fn exec_jalr(cpu: &mut CPU, inst: DecodeInst) {
     }
 
     cpu.pc = addr.wrapping_sub(4);
-    println!("JAL jump to {:#010X}", addr);
+    println!("JALR jump to {:#010X}", addr);
     println!("r{} = {:#010X}", inst.rd as usize, cpu.reg[inst.rd as usize]);
 }
