@@ -20,7 +20,7 @@ impl CPU {
         // match The opcode to a format
         match op_code {
             // I-type
-            0x13|0x03|0x67 => {
+            0x13|0x03|0x67|0x73 => {
                 return DecodeInst {
                     op_code: op_code,
                     rd: ((inst >> 7) & 0x1F) as u8,

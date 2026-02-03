@@ -10,6 +10,7 @@ mod auipc;
 mod branch;
 mod jal;
 mod jalr;
+mod system;
 
 use imm::exec_imm;
 use lui::exec_lui;
@@ -20,6 +21,7 @@ use auipc::exec_auipc;
 use branch::exec_branch;
 use jal::exec_jal;
 use jalr::exec_jalr;
+use system::exec_system;
 
 impl CPU {
     pub(crate) fn execute(&mut self, inst: DecodeInst) {
@@ -33,6 +35,7 @@ impl CPU {
             0x63 => exec_branch(self, inst),
             0x6F => exec_jal(self, inst),
             0x67 => exec_jalr(self, inst),
+            0x73 => exec_system(self, inst),
             _ => panic!("UnImplemented opcode: {:#010X}",inst.op_code),
         }
     }
