@@ -27,7 +27,7 @@ fn main() {
     }*/
 
     // Initialize CPU
-    let mut iron_clad = CPU::new(hardware_bus);
+    let mut iron_clad = CPU::new(hardware_bus, models::cpu::Mode::Machine);
 
     let entry_point = iron_clad.bus.load_elf(bin_path);
     iron_clad.pc = entry_point;

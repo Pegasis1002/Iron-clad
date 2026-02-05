@@ -3,7 +3,8 @@ use crate::models::cpu::CPU;
 use crate::cpu::exec::m_ext::exec_m_ext;
 
 pub(crate) fn exec_reg(cpu: &mut CPU, inst: DecodeInst){
-    if inst.funct7 == 0x1 {
+    // M-Extension
+    if inst.funct7 == 0x1 { 
         exec_m_ext(cpu, inst);
         return;
     }
