@@ -1,7 +1,8 @@
 use crate::models::bus::BUS;
 
 impl BUS {
-    pub(crate) fn write(&mut self, addr: u32, data: u32) {
+    #[inline(always)]
+    pub(crate) fn write(&mut self, addr: u32, data: u32, size: usize) {
 
         // UART check
         if addr == 0x1000_0000 {
@@ -13,7 +14,7 @@ impl BUS {
 
         // VRAM
         if addr >= 0x1100_0000 && addr < 0x1104_B000 {
-            let index = ((addr - 0x1100_0000) / 4) as usize;
+            let index = ((addr - 0x1100_0000) >> 2) as usize;
             if index < self.vram.len() {
                 self.vram[index] = data;
             }
@@ -32,9 +33,11 @@ impl BUS {
             return;
         }
 
-        self.ram[index] = bytes[0];
-        self.ram[index + 1] = bytes[1];
-        self.ram[index + 2] = bytes[2];
-        self.ram[index + 3] = bytes[3];
+        for i in 0..size {
+            if index + i < self.ram.len() {
+                self.ram[index + i] = bytes[i];
+            }
+        }
+
     }
 }

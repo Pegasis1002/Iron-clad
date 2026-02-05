@@ -1,37 +1,35 @@
 #include "raylib.h"
-#include <stdint.h>
+#include "interface.h"
 
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
 
+static Texture2D screen_texture;
+static Image screen_image;
+
 void gui_init(int width, int height) {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Iron-clad RISC-V");
   SetTargetFPS(60);
+
+  Image initial_image = GenImageColor(width, height, BLACK);
+  screen_texture = LoadTextureFromImage(initial_image);
+  UnloadImage(initial_image);
 }
 
 void gui_update(const uint32_t* vram){
+  UpdateTexture(screen_texture, vram);
+
   BeginDrawing();
   ClearBackground(BLACK);
 
-  for (int y = 0; y < SCREEN_HEIGHT; y++) {
-        for (int x = 0; x < SCREEN_WIDTH; x++) {
-            uint32_t pixel = vram[y * SCREEN_WIDTH + x];
-            
-            // Convert 0xRRGGBB to Raylib Color
-            Color color = {
-                (pixel >> 16) & 0xFF, // R
-                (pixel >> 8) & 0xFF,  // G
-                pixel & 0xFF,         // B
-                255                   // Alpha
-            };
-            DrawPixel(x, y, color);
-        }
-    }
-
+  DrawTexture(screen_texture, 0, 0, WHITE);
 
   EndDrawing();
 }
 
 int gui_should_close(){ return WindowShouldClose(); }
 
-void gui_terminate(){ CloseWindow(); }
+void gui_terminate(){
+  UnloadTexture(screen_texture);
+  CloseWindow();
+}

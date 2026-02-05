@@ -51,13 +51,12 @@ fn main() {
     
     // NEW LOOP
     while screen.is_open() {
-        for _ in 0..100_000 {
+        for _ in 0..3_500_000 {
             if iron_clad.step() {
                 println!("INFO: Program reached the end.");
                 break;
             }
         }
-
         screen.refresh(&iron_clad.bus.vram);
     }
 }

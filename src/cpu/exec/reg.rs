@@ -11,13 +11,7 @@ pub(crate) fn exec_reg(cpu: &mut CPU, inst: DecodeInst){
                 0x2 => slt(cpu, inst),
                 0x3 => sltu(cpu, inst),
                 0x4 => xor(cpu, inst),
-                0x5 => {
-                    match inst.funct7 {
-                        0x0 => slr(cpu, inst),
-                        0x20 => sla(cpu, inst),
-                        _ => panic!("Invalid R-type funct7: {}", inst.funct7),
-                    }
-                },
+                0x5 => slr(cpu, inst),
                 0x7 => and(cpu, inst),
                 0x6 => or(cpu, inst),
                 _ => panic!("Invalid R-type funct3 for Imm: {}", inst.funct3),
