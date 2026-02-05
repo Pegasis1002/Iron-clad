@@ -1,9 +1,12 @@
 mod models;
 mod bus;
 mod cpu;
+mod gui;
 
 use crate::models::bus::BUS;
 use crate::models::cpu::CPU;
+
+use gui::Screen;
 
 fn main() {
     // Arguments
@@ -26,21 +29,35 @@ fn main() {
         return;
     }*/
 
+    // Initialize GUI
+    let screen = Screen::new(320, 240);
+
     // Initialize CPU
     let mut iron_clad = CPU::new(hardware_bus, models::cpu::Mode::Machine);
 
     let entry_point = iron_clad.bus.load_elf(bin_path);
     iron_clad.pc = entry_point;
 
-    iron_clad.reg[2] = 0x8000_0000 + (128 * 1024 * 1024) as u32;
-
     println!("CPU Initialized! PC start at {:#X}", iron_clad.pc);
 
-    let mut exit = false;
-    while !exit {
-        if CPU::step(&mut iron_clad) {
-            print!("INFO: End of Program reached!");
-            exit = true;
+    //  let mut exit = false;
+    //  while !exit {
+    //      screen.refresh(&iron_clad.bus.vram);
+    //      if CPU::step(&mut iron_clad) {
+    //          print!("INFO: End of Program reached!");
+    //          exit = true;
+    //      }
+    //  }
+    
+    // NEW LOOP
+    while screen.is_open() {
+        for _ in 0..100_000 {
+            if iron_clad.step() {
+                println!("INFO: Program reached the end.");
+                break;
+            }
         }
+
+        screen.refresh(&iron_clad.bus.vram);
     }
 }

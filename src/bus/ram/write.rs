@@ -4,6 +4,17 @@ impl BUS {
     pub(crate) fn write(&mut self, addr: u32, data: u32) {
         let bytes = data.to_le_bytes();
 
+        // VRAM check
+        if addr >= 0x1100_0000 && addr < 0x1104_B000 {
+            let index = ((addr - 0x1100_0000) / 4) as usize;
+            if index < self.vram.len() {
+                self.vram[index] = data;
+            }
+                println!("VRAM Write detected! Color: {:#010X}", data);
+            return;
+        }
+
+        // UART check
         if addr == 0x1000_0000 {
             print!("{}", (data & 0xFF) as u8 as char);
             use std::io::{self, Write};

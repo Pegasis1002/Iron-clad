@@ -3,32 +3,35 @@ use crate::models::cpu::CPU;
 use crate::cpu::exec::m_ext::exec_m_ext;
 
 pub(crate) fn exec_reg(cpu: &mut CPU, inst: DecodeInst){
-    // M-Extension
-    if inst.funct7 == 0x1 { 
-        exec_m_ext(cpu, inst);
-        return;
-    }
-
-    match inst.funct3 {
-        0x0 => match inst.funct7 {
-            0x0 => add(cpu, inst),
-            0x20 => sub(cpu, inst),
-            _ => panic!("Invalid R-type funct7: {}", inst.funct7),
-        },
-        0x1 => sll(cpu, inst),
-        0x2 => slt(cpu, inst),
-        0x3 => sltu(cpu, inst),
-        0x4 => xor(cpu, inst),
-        0x5 => {
-            match inst.funct7 {
-                0x0 => slr(cpu, inst),
-                0x20 => sla(cpu, inst),
-                _ => panic!("Invalid R-type funct7: {}", inst.funct7),
+    match inst.funct7 {
+        0x0 => {
+            match inst.funct3 {
+                0x0 => add(cpu, inst),
+                0x1 => sll(cpu, inst),
+                0x2 => slt(cpu, inst),
+                0x3 => sltu(cpu, inst),
+                0x4 => xor(cpu, inst),
+                0x5 => {
+                    match inst.funct7 {
+                        0x0 => slr(cpu, inst),
+                        0x20 => sla(cpu, inst),
+                        _ => panic!("Invalid R-type funct7: {}", inst.funct7),
+                    }
+                },
+                0x7 => and(cpu, inst),
+                0x6 => or(cpu, inst),
+                _ => panic!("Invalid R-type funct3 for Imm: {}", inst.funct3),
             }
         },
-        0x7 => and(cpu, inst),
-        0x6 => or(cpu, inst),
-        _ => panic!("Invalid R-type funct3 for Imm: {}", inst.funct3),
+        0x1 => exec_m_ext(cpu, inst),
+        0x20 => {
+            match inst.funct3 {
+                0x0 => sub(cpu, inst),
+                0x5 => sla(cpu, inst),
+                _ => panic!("Invalid R-type funct3: {}", inst.funct3)
+            }
+        },
+        _ => panic!("Invalid R-type funct7: {}", inst.funct7),
     }
 }
 

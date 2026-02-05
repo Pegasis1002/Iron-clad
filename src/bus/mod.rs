@@ -8,6 +8,7 @@ impl BUS {
     pub fn new() -> Self {
         return Self {
             ram: vec![0; RAM_SIZE],
+            vram: vec![0; 320 * 240],
         }
     }
 }
