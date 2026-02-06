@@ -15,4 +15,5 @@ pub(crate) struct CPU {
     pub(crate) bus: BUS,
     pub(crate) mode: Mode,
     pub(crate) csr: [u32; 4096],
+    pub(crate) cycles: u64,
 }

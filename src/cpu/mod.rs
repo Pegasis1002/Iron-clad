@@ -21,6 +21,7 @@ impl CPU {
             bus,
             mode,
             csr,
+            cycles: 0x0,
         }
     }
 }
