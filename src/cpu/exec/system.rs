@@ -16,19 +16,13 @@ pub(crate) fn exec_system(cpu: &mut CPU, inst: DecodeInst) {
 }
 
 fn ecall(cpu: &mut CPU) {
-    let syscall_no = cpu.reg[17];
+    cpu.csr[0x341] = cpu.pc;
+    cpu.csr[0x342] = 8;
 
-    match syscall_no {
-        93 => {
-            cpu.csr[0x341] = cpu.pc;
-            cpu.csr[0x342] = 8;
-            
-            cpu.mode = Mode::Machine;
-            cpu.pc = cpu.csr[0x305].wrapping_sub(4);
-            println!("TRAP: ECALL caught. Jumping to Kernel at {:#X}", cpu.csr[0x305]);
-        },
-        _ => println!("Unhandled ECALL: syscall number {}", syscall_no)
-    }
+    cpu.mode = Mode::Machine;
+    cpu.pc = cpu.csr[0x305].wrapping_sub(4);
+
+    println!("TRAP: ECALL caught. Jumping to Kernel at {:#X}", cpu.csr[0x305]);
 }
 
 fn mret(cpu: &mut CPU) {
