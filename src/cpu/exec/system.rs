@@ -1,5 +1,7 @@
 use crate::{cpu::{self, decode::DecodeInst}, models::cpu::{CPU, Mode}};
 
+use crate::cpu::csr::{read, write};
+
 pub(crate) fn exec_system(cpu: &mut CPU, inst: DecodeInst) {
     match inst.funct3 {
         0x0 => {
@@ -41,6 +43,18 @@ fn csrrw(cpu: &mut CPU, inst: DecodeInst){
 
     if inst.rd != 0 {
         cpu.reg[inst.rd as usize] = old_val
+    }
+}
+
+pub fn execute_csr(cpu: &mut CPU, inst: &DecodeInst) {
+    let csr_addr = inst.imm as u16;
+    let old_val = read::csr_read(cpu, csr_addr);
+
+    let new_val = cpu.reg[inst.rs1 as usize];
+    write::csr_write(cpu, csr_addr, new_val);
+
+    if inst.rd != 0 {
+        cpu.reg[inst.rd as usize] = old_val;
     }
 }
 
