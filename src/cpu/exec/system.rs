@@ -1,4 +1,4 @@
-use crate::{cpu::{self, decode::DecodeInst}, models::cpu::{CPU, Mode}};
+use crate::{cpu::{self, csr::{MCAUSE, MEPC, MSTATUS, MTVEC}, decode::DecodeInst}, models::cpu::{CPU, Mode}};
 
 use crate::cpu::csr::{read, write};
 
@@ -11,61 +11,78 @@ pub(crate) fn exec_system(cpu: &mut CPU, inst: DecodeInst) {
                 _ => panic!("Unkown system instruction")
             }
         },
-        0x1 => csrrw(cpu, inst),
-        0x2 => csrrs(cpu, inst),
+        0x1 => execute_csr(cpu, &inst, CSROp::Write),
+        0x2 => execute_csr(cpu, &inst, CSROp::Set),
+        0x3 => execute_csr(cpu, &inst, CSROp::Clear),
         _ => {}
     }
 }
 
+enum CSROp {
+    Write, Set, Clear
+}
+
 fn ecall(cpu: &mut CPU) {
-    cpu.csr[0x341] = cpu.pc;
-    cpu.csr[0x342] = 8;
+    write::csr_write(cpu, MEPC, cpu.pc);
+
+    write::csr_write(cpu, MCAUSE, 8);
+    let mstatus = read::csr_read(cpu, MSTATUS);
+    let mut new_mstatus = mstatus;
+
+    let mie = (mstatus >> 3) & 1;
+    new_mstatus = (new_mstatus & !(1<<7)) | (mie << 7);
+
+    new_mstatus &= !(1<<3);
+
+    let mode = match cpu.mode {
+        Mode::User => 0,
+        Mode::Machine => 3,
+        Mode::Supervisor => 1,
+    };
+
+    new_mstatus = (new_mstatus & !(3<<11)) | (mode << 11);
+
+    write::csr_write(cpu, MSTATUS, new_mstatus);
 
     cpu.mode = Mode::Machine;
-    cpu.pc = cpu.csr[0x305].wrapping_sub(4);
+    let mtvec = read::csr_read(cpu, MTVEC);
+    cpu.pc = mtvec.wrapping_sub(4);
 
-    println!("TRAP: ECALL caught. Jumping to Kernel at {:#X}", cpu.csr[0x305]);
+    println!("\nTRAP: ECALL caught. Jumping to Kernel at {:#010X}", mtvec);
 }
 
 fn mret(cpu: &mut CPU) {
-    cpu.pc = cpu.csr[0x341];
+    let mepc = read::csr_read(cpu, MEPC);
+    let mstatus = read::csr_read(cpu, MSTATUS);
 
-    cpu.mode = Mode::User;
-    cpu.pc = cpu.pc.wrapping_sub(4);
+    let mpp = (mstatus >> 11) & 3;
+    cpu.mode = match mpp {
+        0 => Mode::User,
+        _ => Mode::Machine,
+    };
+
+    let mpie = (mstatus >> 7) & 1;
+    let mut new_mstatus = (mstatus & !(1<<3)) | (mpie << 3);
+
+    new_mstatus |= 1 << 7;
+    write::csr_write(cpu, MSTATUS, new_mstatus);
+
+    cpu.pc = mepc.wrapping_sub(4);
 }
 
-fn csrrw(cpu: &mut CPU, inst: DecodeInst){
-    let csr_addr = inst.imm as usize;
-    let val = cpu.reg[inst.rs1 as usize];
-
-    let old_val = cpu.csr[csr_addr];
-    cpu.csr[csr_addr] = val;
-
-    if inst.rd != 0 {
-        cpu.reg[inst.rd as usize] = old_val
-    }
-}
-
-pub fn execute_csr(cpu: &mut CPU, inst: &DecodeInst) {
+pub fn execute_csr(cpu: &mut CPU, inst: &DecodeInst, op: CSROp) {
     let csr_addr = inst.imm as u16;
     let old_val = read::csr_read(cpu, csr_addr);
 
-    let new_val = cpu.reg[inst.rs1 as usize];
+    let rs1_val = cpu.reg[inst.rs1 as usize];
+    let new_val = match op {
+        CSROp::Write => rs1_val,
+        CSROp::Set => old_val | rs1_val,
+        CSROp::Clear => old_val & !rs1_val,
+    };
+
     write::csr_write(cpu, csr_addr, new_val);
 
-    if inst.rd != 0 {
-        cpu.reg[inst.rd as usize] = old_val;
-    }
-}
-
-// This is the instruction that 'csrr' actually maps to
-fn csrrs(cpu: &mut CPU, inst: DecodeInst) {
-    let csr_addr = (inst.imm as usize) & 0xFFF;
-    let old_val = cpu.csr[csr_addr];
-
-    cpu.csr[csr_addr] = old_val | cpu.reg[inst.rs1 as usize];
-    
-    // We only care about reading for the benchmark
     if inst.rd != 0 {
         cpu.reg[inst.rd as usize] = old_val;
     }
