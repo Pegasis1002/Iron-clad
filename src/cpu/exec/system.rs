@@ -1,4 +1,4 @@
-use crate::{cpu::{self, csr::{MCAUSE, MEPC, MSTATUS, MTVEC}, decode::DecodeInst}, models::cpu::{CPU, Mode}};
+use crate::{cpu::{csr::{MCAUSE, MEPC, MSTATUS, MTVEC}, decode::DecodeInst}, models::cpu::{CPU, Mode}};
 
 use crate::cpu::csr::{read, write};
 
@@ -18,7 +18,7 @@ pub(crate) fn exec_system(cpu: &mut CPU, inst: DecodeInst) {
     }
 }
 
-enum CSROp {
+pub enum CSROp {
     Write, Set, Clear
 }
 
