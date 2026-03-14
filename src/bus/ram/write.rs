@@ -6,7 +6,7 @@ impl BUS {
 
         // CLINT check
         if addr >= 0x0200_0000  && addr <= 0x0200_FFFF {
-            clint(&mut self, addr, data);
+            clint(self, addr, data);
         }
 
         // UART check
@@ -47,8 +47,16 @@ impl BUS {
     }
 }
 
-fn clint(bus: &mut BUS, addr: u32, val: u32){
+fn clint(bus: &mut BUS, addr: u32, val: u32) {
     match addr {
-        0x0200_4000 => write_mtime
+        // mtimecmp: 0x02004000 (Low), 0x02004004 (High)
+        0x0200_4000 => bus.mtimecmp = (bus.mtimecmp & !0xFFFFFFFF) | (val as u64),
+        0x0200_4004 => bus.mtimecmp = (bus.mtimecmp & 0x00000000FFFFFFFF) | ((val as u64) << 32),
+
+        // mtime: 0x0200BFF8 (Low), 0x0200BFFC (High)
+        0x0200_BFF8 => bus.mtime = (bus.mtime & !0xFFFFFFFF) | (val as u64),
+        0x0200_BFFC => bus.mtime = (bus.mtime & 0x00000000FFFFFFFF) | ((val as u64) << 32),
+        
+        _ => {}
     }
 }

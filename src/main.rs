@@ -61,7 +61,7 @@ fn main() {
 
         // Increment mtime
         let now = std::time::Instant::now();
-        let elapsed_ms = now.duration_since(last_time).as_milis() as u64;
+        let elapsed_ms = now.duration_since(last_time).as_millis() as u64;
 
         if elapsed_ms > 0 {
             let current_mtime = iron_clad.bus.read_mtime();

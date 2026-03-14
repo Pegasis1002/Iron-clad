@@ -9,6 +9,8 @@ impl BUS {
         return Self {
             ram: vec![0; RAM_SIZE],
             vram: vec![0; 320 * 240],
+            mtime: 0x0,
+            mtimecmp: 0x0,
         }
     }
 }
