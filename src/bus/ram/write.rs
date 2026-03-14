@@ -7,6 +7,7 @@ impl BUS {
         // CLINT check
         if addr >= 0x0200_0000  && addr <= 0x0200_FFFF {
             clint(self, addr, data);
+            return;
         }
 
         // UART check
