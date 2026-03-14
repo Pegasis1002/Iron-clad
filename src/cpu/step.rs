@@ -16,6 +16,11 @@ impl CPU {
 
         self.execute(decoded_instruction);
         
+        // MTIME Interrupt
+        if self.bus.mtime >= self.bus.mtimecmp && self.bus.mtimecmp != 0 {
+            self.csr[0x344] |= (1 << 7);
+        }
+
         //Increament Program counter and Cycles
         self.pc += 4;
         self.cycles += 1;
