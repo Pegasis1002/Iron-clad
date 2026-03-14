@@ -50,11 +50,11 @@ impl BUS {
 
 fn clint(bus: &mut BUS, addr: u32, val: u32) {
     match addr {
-        // mtimecmp: 0x02004000 (Low), 0x02004004 (High)
+        // Handle mtimecmp halves
         0x0200_4000 => bus.mtimecmp = (bus.mtimecmp & !0xFFFFFFFF) | (val as u64),
         0x0200_4004 => bus.mtimecmp = (bus.mtimecmp & 0x00000000FFFFFFFF) | ((val as u64) << 32),
-
-        // mtime: 0x0200BFF8 (Low), 0x0200BFFC (High)
+        
+        // Handle mtime halves
         0x0200_BFF8 => bus.mtime = (bus.mtime & !0xFFFFFFFF) | (val as u64),
         0x0200_BFFC => bus.mtime = (bus.mtime & 0x00000000FFFFFFFF) | ((val as u64) << 32),
         

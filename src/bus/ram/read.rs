@@ -35,17 +35,3 @@ impl BUS{
         u32::from_le_bytes(buff)
     }
 }
-
-fn handle_clint_read(bus: &BUS, addr: u32) -> u32 {
-        match addr {
-            // Read mtimecmp (0x02004000 = Low, 0x02004004 = High)
-            0x0200_4000 => (bus.mtimecmp & 0xFFFFFFFF) as u32,
-            0x0200_4004 => (bus.mtimecmp >> 32) as u32,
-
-            // Read mtime (0x0200BFF8 = Low, 0x0200BFFC = High)
-            0x0200_BFF8 => (bus.mtime & 0xFFFFFFFF) as u32,
-            0x0200_BFFC => (bus.mtime >> 32) as u32,
-
-            _ => 0,
-        }
-    }
