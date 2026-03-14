@@ -1,8 +1,13 @@
-use crate::models::bus::BUS;
+use crate::{bus::ram::write_mtime, models::bus::BUS};
 
 impl BUS {
     #[inline(always)]
     pub(crate) fn write(&mut self, addr: u32, data: u32, size: usize) {
+
+        // CLINT check
+        if addr >= 0x0200_0000  && addr <= 0x0200_FFFF {
+            clint(&mut self, addr, data);
+        }
 
         // UART check
         if addr == 0x1000_0000 {
@@ -39,5 +44,11 @@ impl BUS {
             }
         }
 
+    }
+}
+
+fn clint(bus: &mut BUS, addr: u32, val: u32){
+    match addr {
+        0x0200_4000 => write_mtime
     }
 }

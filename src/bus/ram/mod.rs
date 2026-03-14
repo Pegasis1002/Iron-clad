@@ -1,5 +1,10 @@
 pub mod read_word;
 pub mod load_binary;
 pub mod write;
+pub mod write_x64;
 pub mod read;
+pub mod read_x64;
+pub mod clint;
+pub mod read_mtime;
+pub mod write_mtime;
 pub mod load_elf;

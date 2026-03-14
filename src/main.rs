@@ -50,6 +50,7 @@ fn main() {
     //  }
     
     // NEW LOOP
+    let mut last_time = std::time::Instant::now();
     while screen.is_open() {
         for _ in 0..3_500_000 {
             if iron_clad.step() {
@@ -57,6 +58,17 @@ fn main() {
                 break;
             }
         }
+
+        // Increment mtime
+        let now = std::time::Instant::now();
+        let elapsed_ms = now.duration_since(last_time).as_milis() as u64;
+
+        if elapsed_ms > 0 {
+            let current_mtime = iron_clad.bus.read_mtime();
+            iron_clad.bus.write_mtime( current_mtime + elapsed_ms );
+            last_time = now;
+        }
+
         screen.refresh(&iron_clad.bus.vram);
     }
 }
