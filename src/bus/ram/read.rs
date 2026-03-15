@@ -2,6 +2,10 @@ use crate::bus::BUS;
 
 impl BUS{
     pub(crate) fn read(&self, addr: u32, bytes: usize) -> u32 {
+        if addr == 0x1000_0060 {
+            return self.key_buff;
+        }
+
         if addr >= 0x0200_0000 && addr <= 0x0200_BFFF {
             return match addr {
                 0x0200_BFF8 => (self.mtime & 0xFFFFFFFF) as u32,       // Low 32 bits

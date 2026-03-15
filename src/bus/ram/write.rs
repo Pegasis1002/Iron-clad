@@ -4,6 +4,12 @@ impl BUS {
     #[inline(always)]
     pub(crate) fn write(&mut self, addr: u32, data: u32, size: usize) {
 
+        // Key board check
+        if addr == 0x1000_0060 {
+            self.key_buff = data;
+            return;
+        }
+
         // CLINT check
         if addr >= 0x0200_0000  && addr <= 0x0200_FFFF {
             clint(self, addr, data);

@@ -1,7 +1,6 @@
 #ifndef IRONCLAD_GUI_H
 #define IRONCLAD_GUI_H
 
-#include <cstdint>
 #include <stdint.h>
 
 void gui_init(int width, int height);

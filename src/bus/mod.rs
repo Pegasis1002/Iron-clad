@@ -11,6 +11,7 @@ impl BUS {
             vram: vec![0; 320 * 240],
             mtime: 0x0,
             mtimecmp: 0x0,
+            key_buff: 0x0,
         }
     }
 }
