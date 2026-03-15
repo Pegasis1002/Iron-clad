@@ -8,5 +8,6 @@ void gui_update(const uint32_t* vram);
 int gui_should_close();
 void terminate();
 uint32_t gui_get_key();
+uint32_t gui_get_char();
 
 #endif // !IRONCLAD_GUI_H

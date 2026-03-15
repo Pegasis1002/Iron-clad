@@ -5,6 +5,7 @@ fn gui_update(vram: *const u32);
 fn gui_should_close() -> bool;
 fn gui_terminate();
 fn gui_get_key() -> u32;
+fn gui_get_char() -> u32;
 }
 
 pub struct Screen;
@@ -25,6 +26,16 @@ impl Screen {
 
     pub fn get_key_pressed(&self) -> Option<u32>  {
         let key =unsafe { gui_get_key() };
+
+        if key == 0 {
+            None
+        } else {
+            Some(key)
+        }
+    }
+
+    pub fn get_char_pressed(&self) -> Option<u32>  {
+        let key = unsafe { gui_get_char() };
 
         if key == 0 {
             None

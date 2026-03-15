@@ -39,3 +39,7 @@ void gui_terminate(){
 uint32_t gui_get_key() {
   return (uint32_t)GetKeyPressed();
 }
+
+uint32_t gui_get_char() {
+  return (uint32_t)GetCharPressed();
+}

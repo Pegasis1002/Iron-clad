@@ -66,11 +66,11 @@ fn main() {
                     iron_clad.bus.write_mtime(current_mtime + elapsed_ms);
                     last_time = now;
                 }
-            }
-        }
 
-        if let Some(key) = screen.get_key_pressed() {
-            iron_clad.bus.write(0x1000_0060, key as u32, 4);
+                if let Some(key) = screen.get_char_pressed() {
+                    iron_clad.bus.write(0x1000_0060, key as u32, 4);
+                }
+            }
         }
 
         screen.refresh(&iron_clad.bus.vram);
