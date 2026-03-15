@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "interface.h"
+#include <stdint.h>
 
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
@@ -8,6 +9,7 @@ static Texture2D screen_texture;
 static Image screen_image;
 
 void gui_init(int width, int height) {
+  SetTraceLogLevel(LOG_NONE);
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Iron-clad RISC-V");
   SetTargetFPS(60);
 
@@ -32,4 +34,8 @@ int gui_should_close(){ return WindowShouldClose(); }
 void gui_terminate(){
   UnloadTexture(screen_texture);
   CloseWindow();
+}
+
+uint32_t gui_get_key() {
+  return (uint32_t)GetKeyPressed();
 }

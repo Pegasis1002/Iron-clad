@@ -55,18 +55,24 @@ fn mret(cpu: &mut CPU) {
     let mepc = read::csr_read(cpu, MEPC);
     let mstatus = read::csr_read(cpu, MSTATUS);
 
+    // 1. Restore Privilege Mode
     let mpp = (mstatus >> 11) & 3;
     cpu.mode = match mpp {
         0 => Mode::User,
         _ => Mode::Machine,
     };
 
+    // 2. Restore Interrupt Enable (MIE = MPIE)
     let mpie = (mstatus >> 7) & 1;
-    let mut new_mstatus = (mstatus & !(1<<3)) | (mpie << 3);
-
+    let mut new_mstatus = (mstatus & !(1 << 3)) | (mpie << 3);
+    
+    // Set MPIE to 1 (default) and clear MPP
     new_mstatus |= 1 << 7;
+    new_mstatus &= !(3 << 11);
+    
     write::csr_write(cpu, MSTATUS, new_mstatus);
 
+    // 3. Set PC (Wait! See Shishou's Warning below)
     cpu.pc = mepc.wrapping_sub(4);
 }
 

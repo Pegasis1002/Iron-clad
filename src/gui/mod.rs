@@ -21,6 +21,10 @@ impl Screen {
     pub fn is_open(&self) -> bool {
         unsafe { !gui_should_close() }
     }
+
+    pub fn get_key_pressed() -> u32  {
+        return 0;
+    }
 }
 
 impl Drop for Screen {
