@@ -1,4 +1,5 @@
 use crate::bus::BUS;
+use crate::bus::mmio;
 use elf::abi::PT_LOAD;
 use elf::endian::AnyEndian;
 use elf::ElfBytes;
@@ -20,8 +21,8 @@ impl BUS {
                         let target_addr = addr + i as u32;
 
                         // ONLY load if the address is within our 128MB RAM range
-                        if target_addr >= 0x8000_0000 && target_addr < 0x8000_0000 + (128 * 1024 * 1024) {
-                            let ram_index = (target_addr - 0x8000_0000) as usize;
+                        if target_addr >= mmio::MMIO_RAM_START && target_addr < mmio::MMIO_RAM_START + (128 * 1024 * 1024) {
+                            let ram_index = (target_addr - mmio::MMIO_RAM_START) as usize;
                             self.ram[ram_index] = byte;
                         } else {
                             // Optional: Print a warning for segments being ignored

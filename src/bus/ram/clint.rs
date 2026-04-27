@@ -1,1 +1,8 @@
-pub const CLINT_MTIME: u32 = 0x0200_BFF8;
+pub const CLINT_START: u32 = 0x0200_0000;
+pub const CLINT_END: u32 = 0x0200_FFFF;
+
+pub const CLINT_MTIME_L: u32 = 0x0200_BFF8;
+pub const CLINT_MTIME_H: u32 = 0x0200_BFFC;
+
+pub const CLINT_MTIMECMP_L: u32 = 0x0200_4000;
+pub const CLINT_MTIMECMP_H: u32 = 0x0200_4004;
