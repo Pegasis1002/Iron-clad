@@ -1,8 +1,9 @@
 use crate::bus::BUS;
+use crate::bus::mmio;
 
 impl BUS {
     pub(crate) fn read_x64(&self, addr: u32, bytes: usize) -> u64 {
-        if addr < 0x8000_0000 {
+        if addr < mmio::MMIO_RAM_START {
             println!("memory access error: address {:#x} is below ram start.", addr);
             return 0x0;
         }
@@ -11,7 +12,7 @@ impl BUS {
             return 0x0;
         }
 
-        let index = (addr - 0x8000_0000) as usize;
+        let index = (addr - mmio::MMIO_RAM_START) as usize;
         if index + bytes > self.ram.len() {
             println!("memory access error: address {:#x} is out of ram bounds.", addr);
             return 0x0;
